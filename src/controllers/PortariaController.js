@@ -28,14 +28,14 @@ module.exports = {
         res.json(json);
     },
 
-    addPorteiro: async(req,res) => {
+    inserir: async(req,res) => {
         let json = {error:'', result:{}};
 
         let nome = req.body.modelo;
         let ferias = req.body.ferias;
 
         if(nome && ferias){
-            let porteiroId = await PortariaService.addPorteiro(nome, ferias);
+            let porteiroId = await PortariaService.inserir(nome, ferias);
             json.result = {
                 id: porteiroId,
                 nome,
@@ -44,6 +44,36 @@ module.exports = {
         }else{
             json.error = 'Campos não enviados';
         }
+
+        res.json(json);
+    },
+
+    alterar: async(req,res) => {
+        let json = {error:'', result:{}};
+
+        let id = req.params.id
+        let nome = req.body.modelo;
+        let ferias = req.body.ferias;
+
+        if(id && nome && ferias){
+            
+            await PortariaService.alterar(id, nome, ferias);
+            json.result = {
+                id,
+                nome,
+                ferias
+            };
+        }else{
+            json.error = 'Campos não enviados';
+        }
+
+        res.json(json);
+    },
+
+    excluir: async(req, res) =>{
+        let json = {error: '', result:{}};
+
+        await PortariaService.excluir(req.params.id);
 
         res.json(json);
     }
