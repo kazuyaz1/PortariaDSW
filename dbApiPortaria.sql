@@ -4,10 +4,11 @@ use dbApiPortaria;
 
 create table portaria (
 id int primary key auto_increment,
-nome varchar(30)
+nome varchar(30),
+ferias varchar(10)
 );
 
-insert into portaria (nome) value ('João silveira');
-insert into portaria (nome) value ('Marcelo Neto');
+insert into portaria (nome, ferias) value ('João silveira', 'sim');
+insert into portaria (nome, ferias) value ('Marcelo Neto', 'nao');
 
 select * from portaria;
