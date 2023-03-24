@@ -25,7 +25,7 @@ module.exports = {
         });
     },
 
-    addPorteiro: (nome, ferias) => {
+    inserir: (nome, ferias) => {
         return new Promise((aceito, rejeitado) => {
 
             db.query('INSERT INTO portaria (nome, ferias) VALUES (?, ?)',
@@ -36,5 +36,28 @@ module.exports = {
                 }
             );
         });
-    }
+    },
+
+    alterar: (id, nome, ferias) => {
+        return new Promise((aceito, rejeitado) => {
+
+            db.query('UPDATE portaria SET nome = ?, placa = ? WHERE codigo = ?',
+                [nome, ferias, id],
+                (error, results)=>{
+                    if(error) { rejeitado(error); return; }
+                    aceito(results)
+                }
+            );
+        });
+    },
+
+    excluir: (id) =>{
+        return new Promise((aceito, rejeitado) => {
+            
+            db.query('DELETE FROM portaria WHERE id = ?', [id], (error, results)=>{
+                if(error) { rejeitado(error); return; }
+                aceito(results);
+            });
+        });
+    },
 };
