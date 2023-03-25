@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
-const PortariaController = require('./controllers/PortariaController');
+const PortariaController = require('./controllers/PorteiroController');
 
-router.get('/portaria', PortariaController.buscarTodos),
-router.get('/portaria/:id', PortariaController.buscarUm),
-router.post('/portaria/add', PortariaController.inserir),
-router.put('/portaria/:id', PortariaController.alterar),
-router.delete('/portaria/:id', PortariaController.excluir),
+router.get('/porteiro', PortariaController.buscarTodos),
+router.get('/porteiro/:id', PortariaController.buscarUm),
+router.post('/porteiro/add', PortariaController.inserir),
+router.put('/porteiro/altera/:id', PortariaController.alterar),
+router.delete('/porteiro/exclui/:id', PortariaController.excluir),
 
 module.exports = router;

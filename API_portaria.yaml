@@ -1,0 +1,239 @@
+---
+openapi: 3.0.3
+info:
+  title: Swagger Portaria - OpenAPI 3.0
+  termsOfService: http://swagger.io/terms/
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/VKAZUYAKINJO/DSW/1.0.0
+  description: SwaggerHub API Auto Mocking
+tags:
+- name: porteiro
+  description: CRUD porteiro
+  externalDocs:
+    description: Find out more
+    url: http://swagger.io
+- name: chefe
+  description: Acesso especial do sistema
+  externalDocs:
+    description: Find out more about our chefe
+    url: http://swagger.io
+- name: user
+  description: usuario visitado
+paths:
+  /porteiro:
+    get:
+      tags:
+      - porteiro
+      summary: Busca todos os porteiros
+      description: Retorna todos os porteiros
+      operationId: getPort
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/porteiro'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/porteiro'
+        "400":
+          description: Invalid supplied
+        "404":
+          description: Porteiros not found
+      security:
+      - api_key: []
+      - portaria_auth:
+        - write:porteiros
+        - read:porteiros
+    post:
+      tags:
+      - porteiro
+      summary: Registra porteiro
+      description: ""
+      operationId: updatePortWithForm
+      parameters:
+      - name: name
+        in: query
+        description: Nome do porteiro
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: ferias
+        in: query
+        description: está de ferias?
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "405":
+          description: Invalid input
+      security:
+      - portaria_auth:
+        - write:porteiros
+        - read:porteiros
+  /porteiro/{portId}:
+    get:
+      tags:
+      - porteiro
+      summary: Find porteiro by ID
+      description: Returns a single porteiro
+      operationId: getPortById
+      parameters:
+      - name: portId
+        in: path
+        description: ID of porteiro to return
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/porteiro'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/porteiro'
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Porteiro not found
+      security:
+      - api_key: []
+      - portaria_auth:
+        - write:porteiros
+        - read:porteiros
+    put:
+      tags:
+      - porteiro
+      summary: Update porteiro
+      description: Atualiza porteiro
+      operationId: updatePorteiro
+      parameters:
+      - name: portId
+        in: path
+        description: id do porteiro para atualizar
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      - name: name
+        in: query
+        description: Name of porteiro that needs to be updated
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: ferias
+        in: query
+        description: está de ferias?
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      responses:
+        "405":
+          description: Invalid input
+      security:
+      - portaria_auth:
+        - write:porteiros
+        - read:porteiros
+    delete:
+      tags:
+      - porteiro
+      summary: Deletes a porteiro
+      description: delete a porteiro
+      operationId: deletePort
+      parameters:
+      - name: api_key
+        in: header
+        description: ""
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: portId
+        in: path
+        description: Porteiro id to delete
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "400":
+          description: Invalid porteiro value
+      security:
+      - portaria_auth:
+        - write:porteiros
+        - read:porteiros
+components:
+  schemas:
+    porteiro:
+      required:
+      - name
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        nome:
+          type: string
+          example: José
+        status:
+          type: string
+          example: sim
+      xml:
+        name: porteiro
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
+      xml:
+        name: '##default'
+  requestBodies:
+    porteiro:
+      description: porteiro object that needs to be added to the chefe
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/porteiro'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/porteiro'
+  securitySchemes:
+    portaria_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://portariadsw.swagger.io/oauth/authorize
+          scopes:
+            write:porteiros: modify porteiros in your account
+            read:porteiros: read your porteiros
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header

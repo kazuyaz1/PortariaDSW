@@ -31,7 +31,7 @@ module.exports = {
     inserir: async(req,res) => {
         let json = {error:'', result:{}};
 
-        let nome = req.body.modelo;
+        let nome = req.body.nome;
         let ferias = req.body.ferias;
 
         if(nome && ferias){
@@ -52,7 +52,7 @@ module.exports = {
         let json = {error:'', result:{}};
 
         let id = req.params.id
-        let nome = req.body.modelo;
+        let nome = req.body.nome;
         let ferias = req.body.ferias;
 
         if(id && nome && ferias){
